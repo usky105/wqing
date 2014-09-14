@@ -66,10 +66,17 @@ class User extends CActiveRecord
 			array('qq, office_phone, home_phone, mobile_phone', 'length', 'max'=>20),
 			array('birthday, last_time', 'safe'),
 			array('user_name', 'unique'),
+			array('password', 'transferPassword'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, email, user_name', 'safe', 'on'=>'search'),
 		);
+	}
+
+	public function transferPassword()
+	{
+		$password = $this->password;
+		$this->password = $this->hashPassword($password);
 	}
 
 
@@ -138,7 +145,9 @@ class User extends CActiveRecord
 		    //$this->isNewRecord  是否为新添加用户（新纪录）
 			if($this->isNewRecord){
 				$this->id = ID_Factory::next_id($this);
-			    $this->password=$this->hashPassword($this->password);
+				$this->last_login = time();
+				$this->last_ip = Yii::app()->request->userHostAddress;
+			   // $this->password=$this->hashPassword($this->password);
 			}
 			return true;
 		}else{ 

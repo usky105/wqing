@@ -43,6 +43,25 @@ $this->breadcrumbs=array(
 		<?php echo $form->error($model,'sex'); ?>		
 	</div>
 
+	<div class="row">  
+    <?php echo $form->labelEx($model,'birthday'); ?> 
+    <?php  
+    $this->widget('zii.widgets.jui.CJuiDatePicker', array(  
+        'model'=>$model,  
+        'attribute'=>'birthday',  
+        'options' => array(  
+            'dateFormat'=>'yy-mm-dd', //database save format  
+            //'altFormat'=>'mm-dd-yy' //display format  
+            //'showAnim'=>'fold',  
+            //'yearRange'=>'-3:+3'   
+        ),  
+        'htmlOptions'=>array(  
+            'readonly'=>'readonly',  
+            'style'=>'width:90px;',  
+        )  
+    ));?>  
+    </div>
+
 	<div class="row">
 		<?php echo $form->labelEx($model,'email'); ?>
 		<?php echo $form->textField($model,'email'); ?>
