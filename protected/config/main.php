@@ -71,8 +71,15 @@ return array(
 			'routes'=>array(
 				array(
 					'class'=>'CFileLogRoute',
-					'levels'=>'error, warning',
+					'levels'=>'error, warning, info',
+					'logFile'=> 'my_ex.log',  
 				),
+				// 下面显示页面日志 
+			    array( 
+			      'class'=>'CWebLogRoute', 
+			      'levels'=>'trace',   //级别为trace 
+			      'categories'=>'system.db.*' //只显示关于数据库信息,包括数据库连接,数据库执行语句 
+			    ), 
 				// uncomment the following to show log messages on web pages
 				/*
 				array(

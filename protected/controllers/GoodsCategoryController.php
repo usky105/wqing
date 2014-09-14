@@ -1,12 +1,12 @@
 <?php
 
-class GoodsTypeController extends Controller
+class GoodsCategoryController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='column2';
+	public $layout='//layouts/column2';
 
 	/**
 	 * @return array action filters
@@ -32,9 +32,13 @@ class GoodsTypeController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','delete','admin'),
+				'actions'=>array('create','update'),
 				'users'=>array('@'),
-			),			
+			),
+			array('allow', // allow admin user to perform 'admin' and 'delete' actions
+				'actions'=>array('admin','delete'),
+				'users'=>array('admin'),
+			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
@@ -58,16 +62,16 @@ class GoodsTypeController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new GoodsType;
+		$model=new GoodsCategory;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['GoodsType']))
+		if(isset($_POST['GoodsCategory']))
 		{
-			$model->attributes=$_POST['GoodsType'];
+			$model->attributes=$_POST['GoodsCategory'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->cat_id));
+				$this->redirect(array('view','id'=>$model->category_id));
 		}
 
 		$this->render('create',array(
@@ -87,11 +91,11 @@ class GoodsTypeController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['GoodsType']))
+		if(isset($_POST['GoodsCategory']))
 		{
-			$model->attributes=$_POST['GoodsType'];
+			$model->attributes=$_POST['GoodsCategory'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->cat_id));
+				$this->redirect(array('view','id'=>$model->category_id));
 		}
 
 		$this->render('update',array(
@@ -118,7 +122,7 @@ class GoodsTypeController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('GoodsType');
+		$dataProvider=new CActiveDataProvider('GoodsCategory');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -129,10 +133,10 @@ class GoodsTypeController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new GoodsType('search');
+		$model=new GoodsCategory('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['GoodsType']))
-			$model->attributes=$_GET['GoodsType'];
+		if(isset($_GET['GoodsCategory']))
+			$model->attributes=$_GET['GoodsCategory'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -143,12 +147,12 @@ class GoodsTypeController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return GoodsType the loaded model
+	 * @return GoodsCategory the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=GoodsType::model()->findByPk($id);
+		$model=GoodsCategory::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -156,11 +160,11 @@ class GoodsTypeController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param GoodsType $model the model to be validated
+	 * @param GoodsCategory $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='goods-type-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='goods-category-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

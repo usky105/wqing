@@ -1,22 +1,25 @@
 <?php
 
 /**
- * This is the model class for table "{{goods_type}}".
+ * This is the model class for table "{{goods_category}}".
  *
- * The followings are the available columns in table '{{goods_type}}':
- * @property integer $cat_id
- * @property string $cat_name
+ * The followings are the available columns in table '{{goods_category}}':
+ * @property integer $category_id
+ * @property string $category_name
  * @property integer $enabled
- * @property string $attr_group
+ * @property integer $type_id
+ *
+ * The followings are the available model relations:
+ * @property GoodsType $category
  */
-class GoodsType extends CActiveRecord
+class GoodsCategory extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return '{{goods_type}}';
+		return '{{goods_category}}';
 	}
 
 	/**
@@ -27,13 +30,12 @@ class GoodsType extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			//array('attr_group', 'required'),
-			array('enabled', 'numerical', 'integerOnly'=>true),
-			array('cat_name', 'length', 'max'=>60),
-			//array('attr_group', 'length', 'max'=>255),
+			array('type_id', 'required'),
+			array('enabled, type_id', 'numerical', 'integerOnly'=>true),
+			array('category_name', 'length', 'max'=>60),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('cat_id, cat_name, enabled', 'safe', 'on'=>'search'),
+			array('category_id, category_name, enabled, type_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -45,6 +47,7 @@ class GoodsType extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'category' => array(self::BELONGS_TO, 'GoodsType', 'category_id'),
 		);
 	}
 
@@ -54,10 +57,10 @@ class GoodsType extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'cat_id' => 'Cat',
-			'cat_name' => 'Cat Name',
+			'category_id' => 'Category',
+			'category_name' => 'Category Name',
 			'enabled' => 'Enabled',
-			//'attr_group' => 'Attr Group',
+			'type_id' => 'Type',
 		);
 	}
 
@@ -79,10 +82,10 @@ class GoodsType extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('cat_id',$this->cat_id);
-		$criteria->compare('cat_name',$this->cat_name,true);
+		$criteria->compare('category_id',$this->category_id);
+		$criteria->compare('category_name',$this->category_name,true);
 		$criteria->compare('enabled',$this->enabled);
-		//$criteria->compare('attr_group',$this->attr_group,true);
+		$criteria->compare('type_id',$this->type_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -93,7 +96,7 @@ class GoodsType extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return GoodsType the static model class
+	 * @return GoodsCategory the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

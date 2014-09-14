@@ -102,6 +102,8 @@ class SiteController extends Controller
 	 */
 	public function actionRegister()
 	{
+		//this is un log example
+		//Yii::log('your message', 'error', 'orders');
 		if (!defined('CRYPT_BLOWFISH')||!CRYPT_BLOWFISH)
 			throw new CHttpException(500,"This application requires that PHP was compiled with Blowfish support for crypt().");
 
