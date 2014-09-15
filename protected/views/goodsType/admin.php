@@ -51,6 +51,16 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		'attr_group',
 		array(
 			'class'=>'CButtonColumn',
-		),		
+		),	
+		array(
+			'class'=>'CLinkColumn',
+			'label'=>'new category',
+			'urlExpression'=>'Yii::app()->createURL("GoodsCategory/create",array("type_id"=>$data->primaryKey))',		
+		),	
+		array(
+			'class'=>'CLinkColumn',
+			'label'=>'view category',
+			'urlExpression'=>'Yii::app()->createURL("GoodsCategory/admin",array("type_id"=>$data->primaryKey))',		
+		),	
 	),
 )); ?>

@@ -15,4 +15,8 @@ $this->menu=array(
 
 <h1>Create GoodsCategory</h1>
 
+<p>
+<?php echo $model_type->cat_name; ?>
+</p>
+
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

@@ -37,7 +37,7 @@ class GoodsCategoryController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
+				'users'=>array('@'),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -64,18 +64,27 @@ class GoodsCategoryController extends Controller
 	{
 		$model=new GoodsCategory;
 
+		$type_id = Yii::app()->request->getParam("type_id");
+		
+		if(is_null($type_id)) {
+			echo "ERROR";
+		}
+
+		$model_type = GoodsType::model()->findByPk($type_id); 	
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['GoodsCategory']))
 		{
 			$model->attributes=$_POST['GoodsCategory'];
+			$model->type_id = $type_id;
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->category_id));
 		}
 
 		$this->render('create',array(
 			'model'=>$model,
+			'model_type' => $model_type,
 		));
 	}
 
@@ -133,13 +142,23 @@ class GoodsCategoryController extends Controller
 	 */
 	public function actionAdmin()
 	{
+		$type_id = Yii::app()->request->getParam("type_id");
+
+		$model_type = GoodsType::model()->findByPk($type_id); 		
+
 		$model=new GoodsCategory('search');
 		$model->unsetAttributes();  // clear any default values
+
+		if(!is_null($type_id)) {
+			$model->type_id = $type_id;
+		}
+
 		if(isset($_GET['GoodsCategory']))
 			$model->attributes=$_GET['GoodsCategory'];
 
 		$this->render('admin',array(
 			'model'=>$model,
+			'model_type' => $model_type,
 		));
 	}
 
