@@ -41,6 +41,15 @@ $this->menu=array(
 		'goods_brief',
 		'goods_desc',
 		'goods_thumb',
+		array(
+           'name'=>'goods_thumb',
+           'value'=>'CHtml::image($data->goods_thumb,$data->goods_name,array("width"=>220,"height"=>150))',   //这里显示图片
+           'type'=>'raw',   //这里是原型输出
+           'htmlOptions'=>array(
+               'width'=>'200',
+               'style'=>'text-align:center',
+           ),
+       	),
 		'goods_img',
 		'original_img',
 		'is_real',

@@ -13,17 +13,14 @@
 	// There is a call to performAjaxValidation() commented in generated controller code.
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
+	'htmlOptions'=>array('enctype'=>'multipart/form-data')
 )); ?>
 
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'cat_id'); ?>
-		<?php echo $form->textField($model,'cat_id'); ?>
-		<?php echo $form->error($model,'cat_id'); ?>
-	</div>
+	
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'goods_sn'); ?>
@@ -129,14 +126,28 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'goods_thumb'); ?>
-		<?php echo $form->textField($model,'goods_thumb',array('size'=>60,'maxlength'=>255)); ?>
+		<?php echo $form->fileField($model,'goods_thumb',array('size'=>60,'maxlength'=>255)); ?>
 		<?php echo $form->error($model,'goods_thumb'); ?>
+
+
+        <?php if(!$model->isNewRecord){?>
+        <?php echo CHtml::image(Yii::app()->baseUrl."/".$model->goods_thumb,$model->goods_name,array("width"=>55,"height"=>30)); ?>
+        <input type="hidden" name="goods_thumb2" id="hiddenField"    value="<?php echo $model->goods_thumb;?>"/>
+        <?php }?>
+
+
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'goods_img'); ?>
-		<?php echo $form->textField($model,'goods_img',array('size'=>60,'maxlength'=>255)); ?>
+		<?php echo $form->fileField($model,'goods_img',array('size'=>60,'maxlength'=>255)); ?>
 		<?php echo $form->error($model,'goods_img'); ?>
+
+		<?php if(!$model->isNewRecord){?>
+        <?php echo CHtml::image(Yii::app()->baseUrl."/".$model->goods_img,$model->goods_name,array("width"=>220,"height"=>150)); ?>
+        <input type="hidden" name="goods_img2" id="hiddenField"    value="<?php echo $model->goods_img;?>"/>
+        <?php }?>
+
 	</div>
 
 	<div class="row">

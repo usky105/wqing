@@ -58,12 +58,12 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		array(
 			'class'=>'CLinkColumn',
 			'label'=>'new goods',
-			'urlExpression'=>'Yii::app()->createURL("goods/create",array("type_id"=>$data->primaryKey))',		
+			'urlExpression'=>'Yii::app()->createURL("goods/create",array("cat_id"=>$data->primaryKey))',		
 		),	
 		array(
 			'class'=>'CLinkColumn',
 			'label'=>'view goods',
-			'urlExpression'=>'Yii::app()->createURL("goods/admin",array("type_id"=>$data->primaryKey))',		
+			'urlExpression'=>'Yii::app()->createURL("goods/admin",array("cat_id"=>$data->primaryKey))',		
 		),	
 	),
 )); ?>

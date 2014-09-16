@@ -58,6 +58,11 @@ class Goods extends CActiveRecord
 		return '{{goods}}';
 	}
 
+	public function primaryKey()
+	{
+		return "goods_id";
+	}
+
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -67,17 +72,22 @@ class Goods extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('goods_desc', 'required'),
-			array('cat_id, brand_id, goods_number, warn_number, is_real, is_on_sale, is_alone_sale, is_shipping, sort_order, is_delete, is_best, is_new, is_hot, is_promote, bonus_type_id, goods_type, give_integral, rank_integral, suppliers_id, is_check', 'numerical', 'integerOnly'=>true),
+			array(' brand_id, goods_number, warn_number, is_real, is_on_sale, is_alone_sale, is_shipping, sort_order, is_delete, is_best, is_new, is_hot, is_promote, bonus_type_id, goods_type, give_integral, rank_integral, suppliers_id, is_check', 'numerical', 'integerOnly'=>true),
 			array('goods_sn, goods_name_style', 'length', 'max'=>60),
 			array('goods_name', 'length', 'max'=>120),
 			array('click_count, goods_weight, market_price, shop_price, promote_price, integral, add_time, last_update', 'length', 'max'=>10),
 			array('provider_name', 'length', 'max'=>100),
 			array('promote_start_date, promote_end_date', 'length', 'max'=>11),
-			array('keywords, goods_brief, goods_thumb, goods_img, original_img, seller_note', 'length', 'max'=>255),
+			array('keywords, goods_brief,  original_img, seller_note', 'length', 'max'=>255),
 			array('extension_code', 'length', 'max'=>30),
+
+			//---------
+			array('goods_img','file','types'=>'jpg,gif,png','on'=>'insert'),
+      		array('goods_thumb','file','types'=>'jpg,gif,png','on'=>'insert'),
+
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('goods_id, cat_id, goods_sn, goods_name, goods_name_style, click_count, brand_id, provider_name, goods_number, goods_weight, market_price, shop_price, promote_price, promote_start_date, promote_end_date, warn_number, keywords, goods_brief, goods_desc, goods_thumb, goods_img, original_img, is_real, extension_code, is_on_sale, is_alone_sale, is_shipping, integral, add_time, sort_order, is_delete, is_best, is_new, is_hot, is_promote, bonus_type_id, last_update, goods_type, seller_note, give_integral, rank_integral, suppliers_id, is_check', 'safe', 'on'=>'search'),
+			array('  goods_sn, goods_name, goods_name_style, click_count, brand_id, provider_name, goods_number, goods_weight, market_price, shop_price, promote_price, promote_start_date, promote_end_date, warn_number, keywords, goods_brief, goods_desc,  original_img, is_real, extension_code, is_on_sale, is_alone_sale, is_shipping, integral, add_time, sort_order, is_delete, is_best, is_new, is_hot, is_promote, bonus_type_id, last_update, goods_type, seller_note, give_integral, rank_integral, suppliers_id, is_check', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -98,8 +108,8 @@ class Goods extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'goods_id' => 'Goods',
-			'cat_id' => 'Cat',
+			
+			
 			'goods_sn' => 'Goods Sn',
 			'goods_name' => 'Goods Name',
 			'goods_name_style' => 'Goods Name Style',
@@ -162,7 +172,7 @@ class Goods extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('goods_id',$this->goods_id);
+		//$criteria->compare('goods_id',$this->goods_id);
 		$criteria->compare('cat_id',$this->cat_id);
 		$criteria->compare('goods_sn',$this->goods_sn,true);
 		$criteria->compare('goods_name',$this->goods_name,true);
@@ -221,4 +231,23 @@ class Goods extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+	//beforeSave()这个方法是yii自带的
+	public function beforeSave()
+	{
+		if(parent::beforeSave()){
+		    //$this->isNewRecord  是否为新添加用户（新纪录）
+			if($this->isNewRecord){
+				$this->goods_id = ID_Factory::next_id($this);
+				$this->add_time = time();
+				//$this->last_ip = Yii::app()->request->userHostAddress;
+			   // $this->password=$this->hashPassword($this->password);
+			}
+			return true;
+		}else{ 
+		    return false;
+		}
+	}
+
+
 }

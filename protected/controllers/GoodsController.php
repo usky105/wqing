@@ -64,12 +64,43 @@ class GoodsController extends Controller
 	{
 		$model=new Goods;
 
+		$cat_id = Yii::app()->request->getParam("cat_id");
+		
+		if(is_null($cat_id)) {
+			echo "ERROR";
+		}
+
+
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Goods']))
 		{
 			$model->attributes=$_POST['Goods'];
+			$model->cat_id = $cat_id;
+
+			$model->goods_img=CUploadedFile::getInstance($model,'goods_img');
+      		$model->goods_thumb=CUploadedFile::getInstance($model,'goods_thumb');
+
+      		if($model->goods_img)
+		    {
+		        $newimg = 'imgpath_'.time().'_'.rand(1, 9999).'.'.$model->goods_img->extensionName;
+		        //根据时间戳重命名文件名,extensionName是获取文件的扩展名
+		        $model->goods_img->saveAs('assets/uploads/slide/'.$newimg);
+		        $model->goods_img = 'assets/uploads/slide/'.$newimg;
+		        //将image属性重新命名
+		    }
+		    if($model->goods_thumb)
+		    {
+		        $newthumb = 'thumb_'.time().'_'.rand(1, 9999).'.'.$model->goods_thumb->extensionName;
+		        $model->goods_thumb->saveAs('assets/uploads/slide/'.$newthumb);
+		        $model->goods_thumb = 'assets/uploads/slide/'.$newthumb;
+		    }
+
+
+
+
+
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->goods_id));
 		}
@@ -94,6 +125,29 @@ class GoodsController extends Controller
 		if(isset($_POST['Goods']))
 		{
 			$model->attributes=$_POST['Goods'];
+
+			 $model->goods_img=CUploadedFile::getInstance($model,'goods_img');
+		      $model->goods_thumb=CUploadedFile::getInstance($model,'goods_thumb');
+		      if($model->goods_img)
+		      {
+		        $newimg = 'imgpath_'.time().'_'.rand(1, 9999).'.'.$model->goods_img->extensionName;
+		        //根据时间戳重命名文件名,extensionName是获取文件的扩展名
+		        $model->goods_img->saveAs('assets/uploads/slide/'.$newimg);
+		        $model->goods_img = 'assets/uploads/slide/'.$newimg;
+		        //将image属性重新命名
+		      } else {		      	
+		        $model->goods_img = $_POST['goods_img2'];
+		      }
+		      if($model->goods_thumb)
+		      {
+		        $newthumb = 'thumb_'.time().'_'.rand(1, 9999).'.'.$model->goods_thumb->extensionName;
+		        $model->goods_thumb->saveAs('assets/uploads/slide/'.$newthumb);
+		        $model->goods_thumb = 'assets/uploads/slide/'.$newthumb;
+		      } else {
+		        $model->goods_thumb = $_POST['goods_thumb2'];
+		      }
+
+
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->goods_id));
 		}
